@@ -1,0 +1,17 @@
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    height: 5vh;
+    
+    padding: 10px;
+    background-color: lightblue;
+}
+.app-header h1 {
+    margin: 0;
+}
+.app-header nav {
+    display: flex;
+    gap: 10px;
+}

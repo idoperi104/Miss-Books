@@ -1,0 +1,8 @@
+.show-more{
+    font-size: 0.8rem;
+    color: lightslategray;
+}
+
+.show-more:hover{
+    cursor: pointer;
+}
