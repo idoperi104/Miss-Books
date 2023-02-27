@@ -13,6 +13,7 @@ export const bookService = {
     remove,
     save,
     getEmptyBook,
+    addReview,
 }
 
 function query(filterBy = {}) {
@@ -58,11 +59,22 @@ function getEmptyBook(title = '', amount = 100) {
         thumbnail: 'http://coding-academy.org/books-photos/2.jpg',
         language: 'en',
         listPrice: {
-          amount,
-          currencyCode: 'ILS',
-          isOnSale: false
-        }
-      }
+            amount,
+            currencyCode: 'ILS',
+            isOnSale: false
+        },
+        reviews: []
+    }
+}
+
+function addReview(bookId, review) {
+    review.id = utilService.makeId()
+    get(bookId)
+        .then(book => {
+            if (!book.reviews) book.reviews = []
+            book.reviews.push(review)
+            save(book)
+        })
 }
 
 function _createBooks1() {

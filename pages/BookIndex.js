@@ -3,6 +3,8 @@ import { bookService } from '../services/book.service.js'
 import BookFilter from '../cmps/BookFilter.js'
 import BookList from '../cmps/BookList.js'
 
+import { eventBusService } from '../services/event-bus.service.js'
+
 export default {
     template: `
         <section class="car-index">
@@ -29,6 +31,10 @@ export default {
                 .then(() => {
                     const idx = this.books.findIndex(book => book.id === bookId)
                     this.books.splice(idx, 1)
+                    eventBusService.emit('show-msg', { txt: 'book removed', type: 'success' })
+                })
+                .catch(err=>{
+                    eventBusService.emit('show-msg', { txt: 'book remove failed', type: 'error' })
                 })
         },
         setFilterBy(filterBy) {

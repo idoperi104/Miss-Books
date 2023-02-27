@@ -39,6 +39,10 @@ export default {
                     this.book = bookService.getEmptyBook()
                     this.$emit('book-saved', savedBook)
                     this.$router.push('/book')
+                    eventBusService.emit('show-msg', { txt: 'book saved', type: 'success' })
+                })
+                .catch(err=>{
+                    eventBusService.emit('show-msg', { txt: 'book save failed', type: 'error' })
                 })
         }
     },

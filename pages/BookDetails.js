@@ -1,5 +1,6 @@
 import { bookService } from '../services/book.service.js'
 import LongText from '../cmps/LongText.js'
+import AddReview from '../cmps/AddReview.js'
 
 export default {
     template: `
@@ -20,6 +21,8 @@ export default {
             <p>categories: {{ book.categories.join(', ') }}</p>
 
             <img :src="book.thumbnail" alt="">
+            
+            <AddReview/>
             
             <RouterLink to="/book">Back to list</RouterLink>
         </section>
@@ -66,6 +69,7 @@ export default {
     },
     components: {
         LongText,
+        AddReview,
     }
 }
 

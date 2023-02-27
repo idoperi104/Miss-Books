@@ -19,6 +19,7 @@
 @import 'cmps/BookList.css';
 @import 'cmps/BookPreview.css';
 @import 'cmps/LongText.css';
+@import 'cmps/UserMsg.css';
 
 @import 'cmps/BookDetails.css';
 @import 'cmps/BookEdit.css';

@@ -19,7 +19,7 @@ export default {
         remove(bookId) {
             this.$emit('remove', bookId)
         },
-        showDetails(bookId){
+        showDetails(bookId) {
             this.$emit('show-details', bookId)
         },
     },
