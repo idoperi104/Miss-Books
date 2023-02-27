@@ -5,8 +5,16 @@ export default {
         <section class="book-edit">
             <h2>Add a book</h2>
             <form @submit.prevent="save">
-                <input type="text" v-model="book.title" placeholder="title">
-                <input type="number" v-model.number="book.listPrice.amount">
+                <label for="title">title:</label>
+                <input name="title" type="text" v-model="book.title" placeholder="title">
+                <label for="sub-title">sub title:</label>
+                <input name="sub-title" type="text" v-model="book.subtitle" placeholder="sub title">
+                <label for="price">price:</label>
+                <input name="price" type="number" v-model.number="book.listPrice.amount">
+                <label for="date">published year:</label>
+                <input name="date" type="number" v-model.number="book.publishedDate">
+                <label for="description">description:</label>
+                <input name="description" type="text" v-model="book.description" placeholder="description">
                 <button>Save</button>
             </form>
         </section>

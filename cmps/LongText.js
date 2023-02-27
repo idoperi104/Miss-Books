@@ -5,7 +5,11 @@ export default {
         <article class="long-text">
             <p>
                 {{ getTxt }}
-                <span class="show-more" @click="isShowMore = !isShowMore">{{ getBtnTxt }}</span>
+                <span 
+                    class="show-more" 
+                    @click="isShowMore = !isShowMore">
+                    {{ getBtnTxt }}
+                </span>
             </p>
         </article>
     `,

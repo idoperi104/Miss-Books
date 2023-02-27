@@ -18,3 +18,7 @@
 .book-details button{
     justify-self: end;
 }
+
+.book-details .long-text {
+    max-width: 100%;
+}

@@ -6,6 +6,7 @@ export default {
                 @input="filter" 
                 placeholder="Search"
                 type="text" />
+            <br/>
             <input 
                 v-model="filterBy.maxPrice"
                 @input="filter" 

@@ -15,7 +15,7 @@ export default {
                 :txt="book.description"/>
             <br/>
 
-            <p :class="priceClass">price: {{ book.listPrice.amount }} - {{ book.listPrice.currencyCode }}</p>
+            <p :class="priceClass">price: {{ formattedPrice }}</p>
             <p>pageCount: {{ book.pageCount }} {{ setTypeOfReading }}</p>
             <p>categories: {{ book.categories.join(', ') }}</p>
 
@@ -48,6 +48,10 @@ export default {
             
             if (diff > 10) return 'Vintage'
             return 'New'
+        },
+        formattedPrice(){
+            const {amount, currencyCode} = this.book.listPrice
+            return new Intl.NumberFormat('en', {style: 'currency', currency:currencyCode}).format(amount)
         }
     },
     components: {
