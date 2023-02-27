@@ -1,4 +1,5 @@
 import { bookService } from "../services/book.service.js"
+import { eventBusService } from "../services/event-bus.service.js"
 
 export default {
     template: `
@@ -24,16 +25,22 @@ export default {
             book: bookService.getEmptyBook()
         }
     },
+    created() {
+        const {bookId} = this.$route.params
+        if (bookId) {
+            bookService.get(bookId)
+                .then(book => this.book = book)
+        }
+    },
     methods: {
         save() {
             bookService.save(this.book)
                 .then(savedBook => {
                     this.book = bookService.getEmptyBook()
                     this.$emit('book-saved', savedBook)
+                    this.$router.push('/book')
                 })
         }
     },
-    created() {
-        console.log(this.book);
-    }
+    
 }

@@ -1,34 +1,24 @@
 import { bookService } from '../services/book.service.js'
 
-import BookFilter from './BookFilter.js'
-import BookList from './BookList.js'
-
-import BookDetails from './BookDetails.js'
-import BookEdit from './BookEdit.js'
+import BookFilter from '../cmps/BookFilter.js'
+import BookList from '../cmps/BookList.js'
 
 export default {
     template: `
         <section class="car-index">
+            <RouterLink to="/book/edit">Add a book</RouterLink>
             <BookFilter @filter="setFilterBy"/>
             <BookList
                 :books="filteredBooks"
                 v-if="books"
                 @remove="removeBook"
-                @show-details="showBookDetails"
             />
-            <BookDetails 
-            v-if="selectedBook" 
-            @hide-details="selectedBook = null"
-            :book="selectedBook"
-            />
-            <BookEdit @book-saved="onSaveBook"/>
 
         </section>
     `,
     data() {
         return {
             books: null,
-            selectedBook: null,
             filterBy: {},
 
         }
@@ -41,15 +31,9 @@ export default {
                     this.books.splice(idx, 1)
                 })
         },
-        showBookDetails(bookId) {
-            this.selectedBook = this.books.find(book => book.id === bookId)
-        },
         setFilterBy(filterBy) {
             this.filterBy = filterBy
         },
-        onSaveBook(newBook){
-            this.books.unshift(newBook)
-        }
     },
     computed: {
         filteredBooks() {
@@ -66,8 +50,6 @@ export default {
     },
     components: {
         BookList,
-        BookDetails,
         BookFilter,
-        BookEdit,
     }
 }

@@ -8,7 +8,7 @@ export default {
                 <li v-for="book in books" :key="book.id">
                     <BookPreview
                         :book="book"/>
-                    <button @click="showDetails(book.id)">Details</button>
+                    <RouterLink :to="'/book/'+book.id">Details</RouterLink> |
                     <button @click="remove(book.id)">x</button>
                 </li>
             </ul>

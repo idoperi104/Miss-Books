@@ -1,9 +1,9 @@
-import LongText from './LongText.js'
+import { bookService } from '../services/book.service.js'
+import LongText from '../cmps/LongText.js'
 
 export default {
-    props: ['book'],
     template: `
-        <section class="book-details">
+        <section class="book-details" v-if="book">
             <h2>{{ book.title }}</h2>
             <h3>{{ book.subtitle }}</h3>
             <h4>authors: {{ book.authors.join(', ') }}</h4>
@@ -20,10 +20,20 @@ export default {
             <p>categories: {{ book.categories.join(', ') }}</p>
 
             <img :src="book.thumbnail" alt="">
-
-            <button @click="closeDetails">Close</button>
+            
+            <RouterLink to="/book">Back to list</RouterLink>
         </section>
     `,
+    data (){
+        return {
+            book: null
+        }
+    },
+    created() {
+        const {bookId} = this.$route.params
+        bookService.get(bookId)
+            .then(book => this.book = book)
+    },
     methods: {
         closeDetails() {
             this.$emit('hide-details')
