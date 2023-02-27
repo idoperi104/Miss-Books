@@ -1,6 +1,8 @@
 import { bookService } from '../services/book.service.js'
 import LongText from '../cmps/LongText.js'
 import AddReview from '../cmps/AddReview.js'
+import ReviewList from '../cmps/ReviewList.js'
+import { eventBusService } from "../services/event-bus.service.js"
 
 export default {
     template: `
@@ -22,18 +24,23 @@ export default {
 
             <img :src="book.thumbnail" alt="">
             
-            <AddReview/>
+            <ReviewList
+                :reviews="book.reviews"
+                @remove="removeReview"/>
+
+            <AddReview
+                @add="addNewReview"/>
             
             <RouterLink to="/book">Back to list</RouterLink>
         </section>
     `,
-    data (){
+    data() {
         return {
             book: null
         }
     },
     created() {
-        const {bookId} = this.$route.params
+        const { bookId } = this.$route.params
         bookService.get(bookId)
             .then(book => this.book = book)
     },
@@ -41,7 +48,28 @@ export default {
         closeDetails() {
             this.$emit('hide-details')
         },
-
+        addNewReview(review) {
+            console.log(review);
+            bookService.addReview(this.book.id, review)
+                .then(book => this.book = book)
+                .then(savedBook => {
+                    eventBusService.emit('show-msg', { txt: 'book review saved', type: 'success' })
+                })
+                .catch(err=>{
+                    eventBusService.emit('show-msg', { txt: 'book review failed', type: 'error' })
+                })
+        },
+        removeReview(reviewId){
+            const idx = this.book.reviews.findIndex(review => review.id === reviewId)
+            this.book.reviews.splice(idx, 1)
+            bookService.save(this.book)
+                .then(savedBook => {
+                    eventBusService.emit('show-msg', { txt: 'book review deleted', type: 'success' })
+                })
+                .catch(err=>{
+                    eventBusService.emit('show-msg', { txt: 'delete review failed', type: 'error' })
+                })
+        }
     },
     computed: {
         priceClass() {
@@ -58,18 +86,19 @@ export default {
         setTypeOfDate() {
             const currYear = (new Date().getYear()) + 1900
             const diff = currYear - this.book.publishedDate
-            
+
             if (diff > 10) return 'Vintage'
             return 'New'
         },
-        formattedPrice(){
-            const {amount, currencyCode} = this.book.listPrice
-            return new Intl.NumberFormat('en', {style: 'currency', currency:currencyCode}).format(amount)
+        formattedPrice() {
+            const { amount, currencyCode } = this.book.listPrice
+            return new Intl.NumberFormat('en', { style: 'currency', currency: currencyCode }).format(amount)
         }
     },
     components: {
         LongText,
         AddReview,
+        ReviewList,
     }
 }
 

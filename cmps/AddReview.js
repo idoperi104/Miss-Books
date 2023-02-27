@@ -24,11 +24,7 @@ export default {
     data (){
         return {
             bookId: null,
-            review: {
-                fullname: '',
-                rating: 0,
-                readAt: "2023-02-27",
-            },
+            review: bookService.getEmptyReview(),
         }
     },
     created() {
@@ -36,8 +32,9 @@ export default {
     },
     methods: {
         save() {
-            bookService.addReview(this.bookId, this.review)
-            console.log('saved rev');
+            // bookService.addReview(this.bookId, this.review)
+            console.log('saved rev')
+            this.$emit('add', this.review)
         }
     },
 }

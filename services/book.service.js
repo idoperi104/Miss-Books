@@ -14,6 +14,7 @@ export const bookService = {
     save,
     getEmptyBook,
     addReview,
+    getEmptyReview,
 }
 
 function query(filterBy = {}) {
@@ -67,13 +68,23 @@ function getEmptyBook(title = '', amount = 100) {
     }
 }
 
+function getEmptyReview() {
+    return {
+        id: utilService.makeId(),
+        fullname: '',
+        rating: 0,
+        readAt: "2023-02-27",
+    }
+}
+
 function addReview(bookId, review) {
     review.id = utilService.makeId()
-    get(bookId)
+    return get(bookId)
         .then(book => {
             if (!book.reviews) book.reviews = []
             book.reviews.push(review)
             save(book)
+            return Promise.resolve(book)
         })
 }
 

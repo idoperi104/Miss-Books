@@ -1,29 +1,24 @@
-import BookPreview from './BookPreview.js'
+import ReviewPreview from './ReviewPreview.js'
 
 export default {
-    props: ['books'],
+    props: ['reviews'],
     template: `
         <section class="book-list">
             <ul>
-                <li v-for="book in books" :key="book.id">
-                    <BookPreview
-                        :book="book"/>
-                    <RouterLink :to="'/book/'+book.id">Details</RouterLink> |
-                    <RouterLink :to="'/book/edit/'+book.id">Edit</RouterLink> |
-                    <button @click="remove(book.id)">x</button>
+                <li v-for="review in reviews" :key="review.id">
+                    <ReviewPreview
+                        :review="review"/>
+                    <button @click="remove(review.id)">x</button>
                 </li>
             </ul>
         </section>
     `,
     methods: {
-        remove(bookId) {
-            this.$emit('remove', bookId)
-        },
-        showDetails(bookId) {
-            this.$emit('show-details', bookId)
+        remove(reviewId) {
+            this.$emit('remove', reviewId)
         },
     },
     components: {
-        BookPreview,
+        ReviewPreview,
     }
 }
