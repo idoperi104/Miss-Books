@@ -31,7 +31,11 @@ export default {
             <AddReview
                 @add="addNewReview"/>
             
-            <RouterLink to="/book">Back to list</RouterLink>
+            <nav>
+                <RouterLink :to="'/book/' + book.prevBookId">Previous Book</RouterLink> |
+                <RouterLink :to="'/book/' + book.nextBookId">Next Book</RouterLink> |
+                <RouterLink to="/book">Back to list</RouterLink>
+            </nav>
         </section>
     `,
     data() {
@@ -40,9 +44,7 @@ export default {
         }
     },
     created() {
-        const { bookId } = this.$route.params
-        bookService.get(bookId)
-            .then(book => this.book = book)
+        this.loadBook()
     },
     methods: {
         closeDetails() {
@@ -68,6 +70,10 @@ export default {
                 .catch(err => {
                     eventBusService.emit('show-msg', { txt: 'delete review failed', type: 'error' })
                 })
+        },
+        loadBook() {
+            bookService.get(this.bookId)
+                .then(book => this.book = book)
         }
     },
     computed: {
@@ -92,6 +98,15 @@ export default {
         formattedPrice() {
             const { amount, currencyCode } = this.book.listPrice
             return new Intl.NumberFormat('en', { style: 'currency', currency: currencyCode }).format(amount)
+        },
+        bookId() {
+            return this.$route.params.bookId
+        }
+    },
+    watch: {
+        bookId() {
+            console.log('BookId Changed!')
+            this.loadBook()
         }
     },
     components: {

@@ -21,6 +21,7 @@
 @import 'cmps/LongText.css';
 @import 'cmps/UserMsg.css';
 @import 'cmps/rating-stars.css';
+@import 'cmps/BookAdd.css';
 
 @import 'cmps/BookDetails.css';
 @import 'cmps/BookEdit.css';

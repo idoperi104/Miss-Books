@@ -16,6 +16,7 @@ export const bookService = {
     addReview,
     getEmptyReview,
     removeReview,
+    addGoogleBook,
 }
 
 function query(filterBy = {}) {
@@ -34,6 +35,7 @@ function query(filterBy = {}) {
 
 function get(bookId) {
     return storageService.get(BOOK_KEY, bookId)
+        .then(_setNextPrevBookId)
 }
 
 function remove(bookId) {
@@ -89,25 +91,21 @@ function addReview(bookId, review) {
         })
 }
 
-function removeReview(bookId, reviewId){
+function removeReview(bookId, reviewId) {
     return get(bookId)
-        .then((book)=> {
+        .then((book) => {
             const idx = book.reviews.findIndex(review => review.id === reviewId)
             book.reviews.splice(idx, 1)
             return bookService.save(book)
         })
 }
 
-function _createBooks1() {
-    let books = utilService.loadFromStorage(BOOK_KEY)
-    if (!books || !books.length) {
-        books = []
-        books.push(_createBook('harry potter', 150))
-        books.push(_createBook('shahar life'))
-        books.push(_createBook('tomer journey', 200))
-        books.push(_createBook('ido and friends'))
-        utilService.saveToStorage(BOOK_KEY, books)
-    }
+function addGoogleBook(item) {
+    return query()
+        .then(books => {
+            if (books.some(book => book.googleId === item.id)) return Promise.reject('that book is exist')
+            return save(item)
+        })
 }
 
 function _createBook(title, amount = 100) {
@@ -564,3 +562,15 @@ function _createBooks() {
         utilService.saveToStorage(BOOK_KEY, books)
     }
 }
+
+function _setNextPrevBookId(book) {
+    return storageService.query(BOOK_KEY).then((books) => {
+        const bookIdx = books.findIndex((currBook) => currBook.id === book.id)
+        book.nextBookId = books[bookIdx + 1] ? books[bookIdx + 1].id : books[0].id
+        book.prevBookId = books[bookIdx - 1]
+            ? books[bookIdx - 1].id
+            : books[books.length - 1].id
+        return book
+    })
+}
+
