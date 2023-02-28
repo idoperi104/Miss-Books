@@ -3,26 +3,31 @@ import { bookService } from "../services/book.service.js"
 export default {
     template: `
         <section class="book-edit">
-            <hr />
             <h4>add-review</h4>
             <form @submit.prevent="save">
                 <label for="fullname">Fullname:</label>
                 <input name="fullname" type="text" v-model="review.fullname" placeholder="fullname">
-                <label for="rate">Rate:</label>
-                <input name="rate" type="number" min="0" max="5" v-model.number="review.rating">
                 <label for="read-at">Read At:</label>
                 <input name="read-at" type="date" v-model="review.readAt">
+                <label>rating:</label>
+                <div class="rating">
+                    <template v-if="true" v-for="n in 5">
+                        <input type="radio" name="rating" :value="5-n+1 +' ☆'" :id="n" v-model="review.rating" />
+                        <label :for="n">☆</label>
+                    </template>
+                </div>
+
                 <button>Save</button>
             </form>
 
-            <hr />
 
             
 
         </section>
     `,
-    data (){
+    data() {
         return {
+            rats: [],
             bookId: null,
             review: bookService.getEmptyReview(),
         }

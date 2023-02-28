@@ -55,18 +55,17 @@ export default {
                 .then(savedBook => {
                     eventBusService.emit('show-msg', { txt: 'book review saved', type: 'success' })
                 })
-                .catch(err=>{
+                .catch(err => {
                     eventBusService.emit('show-msg', { txt: 'book review failed', type: 'error' })
                 })
         },
-        removeReview(reviewId){
-            const idx = this.book.reviews.findIndex(review => review.id === reviewId)
-            this.book.reviews.splice(idx, 1)
-            bookService.save(this.book)
+        removeReview(reviewId) {
+            bookService.removeReview(this.book.id, reviewId)
                 .then(savedBook => {
                     eventBusService.emit('show-msg', { txt: 'book review deleted', type: 'success' })
+                    this.book = savedBook
                 })
-                .catch(err=>{
+                .catch(err => {
                     eventBusService.emit('show-msg', { txt: 'delete review failed', type: 'error' })
                 })
         }

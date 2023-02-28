@@ -15,6 +15,7 @@ export const bookService = {
     getEmptyBook,
     addReview,
     getEmptyReview,
+    removeReview,
 }
 
 function query(filterBy = {}) {
@@ -85,6 +86,15 @@ function addReview(bookId, review) {
             book.reviews.push(review)
             save(book)
             return Promise.resolve(book)
+        })
+}
+
+function removeReview(bookId, reviewId){
+    return get(bookId)
+        .then((book)=> {
+            const idx = book.reviews.findIndex(review => review.id === reviewId)
+            book.reviews.splice(idx, 1)
+            return bookService.save(book)
         })
 }
 
